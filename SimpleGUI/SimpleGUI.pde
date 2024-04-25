@@ -74,7 +74,7 @@ void draw() {
   cy = sldy.update(width - 50, 300, 50, 400, 10, 50, -50, 50, false, #0000FF, #594BFF, nfc(cy, 3), 20, #FF0000);
 
   //Прямоугольная кнопка; координаты зависят от положения первого джойстика, шиирина, высота, скругление, цвет зависит от fn1, ширина обводки 10, цвет обводки красный, текст Фон, размер текста 160, цвет текста синий;
-  if (rectButton(width / 2 - 200 + jx1, height / 2 - jy1, 400, 200, 20, fn1 ? #FFFF00 : #00FFFF, 10, #FF0000, "Фон", 160, #0000FF) && !flr) {
+  if (rectButton(width / 2 - 200 + jx1, height / 2 - jy1, 400, 200, 20, fn1 ? #00FF00 : #00FFFF, 10, #FF0000, "Фон", 160, #0000FF) && !flr) {
     flr = true;
     fn = !fn;    //Меняет переменную fn
   }
@@ -100,8 +100,10 @@ boolean rectButton(float x, float y, float w, float h, float r, color colrect, f
   boolean nav = false, prs = false;
   if (abs(mouseX - x) <= w / 2 && abs(mouseY - y) <= h / 2) nav = true;
   if (nav && mousePressed && mouseButton == LEFT) prs = true;
-  strokeWeight(ws);
-  stroke(!prs ? nav ? color(hue(colstrok), saturation(colstrok) - 100, brightness(colstrok)) : colstrok : color(hue(colstrok), saturation(colstrok) - 150, brightness(colstrok)));
+  if (ws >= 1) {
+    strokeWeight(ws);
+    stroke(!prs ? nav ? color(hue(colstrok), saturation(colstrok) - 100, brightness(colstrok)) : colstrok : color(hue(colstrok), saturation(colstrok) - 150, brightness(colstrok)));
+  }
   fill(!prs ? nav ? color(hue(colrect), saturation(colrect) - 100, brightness(colrect)) : colrect : color(hue(colrect), saturation(colrect) - 150, brightness(colrect)));
   rect(x, y, w, h, r);
   fill(!prs ? nav ? color(hue(coltext), saturation(coltext) - 80, brightness(coltext)) : coltext : color(hue(coltext), saturation(coltext) - 120, brightness(coltext)));
@@ -120,8 +122,10 @@ boolean circleButton(float x, float y, float d, color colrect, float ws, color c
   boolean nav = false, prs = false;
   if (dist(x, y, mouseX, mouseY) <= d / 2) nav = true;
   if (nav && mousePressed && mouseButton == LEFT) prs = true;
-  strokeWeight(ws);
-  stroke(!prs ? nav ? color(hue(colstrok), saturation(colstrok) - 100, brightness(colstrok)) : colstrok : color(hue(colstrok), saturation(colstrok) - 150, brightness(colstrok)));
+  if (ws >= 1) {
+    strokeWeight(ws);
+    stroke(!prs ? nav ? color(hue(colstrok), saturation(colstrok) - 100, brightness(colstrok)) : colstrok : color(hue(colstrok), saturation(colstrok) - 150, brightness(colstrok)));
+  }
   fill(!prs ? nav ? color(hue(colrect), saturation(colrect) - 100, brightness(colrect)) : colrect : color(hue(colrect), saturation(colrect) - 150, brightness(colrect)));
   circle(x, y, d);
   fill(!prs ? nav ? color(hue(coltext), saturation(coltext) - 80, brightness(coltext)) : coltext : color(hue(coltext), saturation(coltext) - 120, brightness(coltext)));
@@ -261,7 +265,7 @@ class List {
       textSize(ts2);
       for (int i = 0; i < arr.length; i++) {
         boolean navl = false, prsl = false;
-        if (abs(mouseX - x) <= w / 2 && abs(mouseY - (y + h * (i + 1))) < h / 2 + (i % 2 == 1 ? 1 : 0)) navl = true;
+        if (abs(mouseX - x) <= w / 2 && abs(mouseY - (y + h * (i + 1))) < h / 2) navl = true;
         if (navl && mousePressed && mouseButton == LEFT) prsl = true;
         fill(navl ? color(hue(colrect), saturation(colrect) - 100, brightness(colrect)) : colrect);
         rect(x, y + h * (i + 1), w, h);
@@ -301,7 +305,7 @@ class Text {
       nav = true;
       aor = true;
       cursor(TEXT);
-    } else if(aor) {
+    } else if (aor) {
       aor = false;
       cursor(ARROW);
     }
